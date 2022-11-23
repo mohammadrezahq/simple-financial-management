@@ -15,10 +15,8 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $timestamp = verta()->startMonth()->timestamp;
-
         $transactions = Transaction::with('category:id,name')
-                            ->where('created_at', '>=', $timestamp)
+                            ->whereThisMonth()
                             ->get();
 
         return inertia('Home', ['transactions' => $transactions]);
