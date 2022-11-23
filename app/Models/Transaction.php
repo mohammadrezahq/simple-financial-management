@@ -34,4 +34,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function scopeWhereThisMonth($query)
+    {
+        return $query->whereDate('created_at', '>=', verta()->startMonth()->formatGregorian('Y-n-j H:i:s'));
+    }
 }
