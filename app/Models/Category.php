@@ -26,4 +26,9 @@ class Category extends Model
         return parent::newQuery($excludeDeleted)
             ->where('user_id', auth()->id());
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }
