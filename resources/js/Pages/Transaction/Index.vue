@@ -6,21 +6,27 @@ import TextInput from "@/Components/TextInput.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import axios from "axios";
 import { ref } from "@vue/reactivity";
+import Tranactions from "@/Components/Transactions.vue";
 
 const props = defineProps({
     transactions: Object,
+    categories: Object,
 });
 
 const transactions = ref(props.transactions);
 
 const starts_at = ref();
 const ends_at = ref();
+const category_id = ref(null);
+const type = ref(null);
 
 const filter = () => {
     axios
         .post(route("transactions.filter"), {
             starts_at: starts_at.value,
             ends_at: ends_at.value,
+            category_id: category_id.value,
+            type: type.value,
         })
         .then(({ data }) => {
             transactions.value = data;
@@ -42,9 +48,7 @@ const filter = () => {
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
-                        <h2 class="text-xl font-bold mb-2">
-                            فیلتر بر اساس تاریخ
-                        </h2>
+                        <h2 class="text-xl font-bold mb-2">فیلتر</h2>
                         <div class="flex gap-x-2 items-end mb-4">
                             <div>
                                 <InputLabel for="starts_at"
@@ -69,68 +73,46 @@ const filter = () => {
                                 />
                             </div>
                             <div>
+                                <InputLabel for="type">نوع:</InputLabel>
+                                <select
+                                    name="type"
+                                    id="type"
+                                    v-model="type"
+                                    class="border-gray-300 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                >
+                                    <option value="">همه</option>
+                                    <option selected value="expense">
+                                        خرج
+                                    </option>
+                                    <option value="income">درآمد</option>
+                                </select>
+                            </div>
+                            <div>
+                                <InputLabel for="category">دسته:</InputLabel>
+                                <select
+                                    name="category"
+                                    id="category"
+                                    v-model="category_id"
+                                    class="border-gray-300 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                >
+                                    <option value="">همه</option>
+                                    <option
+                                        v-for="(category, i) in categories"
+                                        :key="i"
+                                        :value="category.id"
+                                    >
+                                        {{ category.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
                                 <PrimaryButton @click="filter()">
                                     فیلتر
                                 </PrimaryButton>
                             </div>
                         </div>
 
-                        <div
-                            class="flex font-bold p-4 m-2 text-slate-600 bg-slate-100"
-                        >
-                            <div class="w-6/12">تیتر</div>
-                            <div class="w-2/12">دسته</div>
-                            <div class="w-2/12">تاریخ</div>
-                            <div class="w-2/12">تغییر</div>
-                        </div>
-                        <div
-                            v-for="(transaction, i) in transactions"
-                            :key="i"
-                            :class="
-                                transaction.type == 'expense'
-                                    ? 'flex rounded-full p-4 m-2 text-red-600 bg-red-50'
-                                    : 'flex rounded-full p-4 m-2 text-green-600 bg-green-50'
-                            "
-                        >
-                            <div
-                                class="w-6/12 overflow-hidden font-bold text-md"
-                            >
-                                {{ transaction.title }}
-                            </div>
-                            <div class="w-2/12">
-                                <Link
-                                    :href="
-                                        route(
-                                            'categories.show',
-                                            transaction.category?.id ?? 0
-                                        )
-                                    "
-                                >
-                                    {{
-                                        transaction.category
-                                            ? transaction.category.name
-                                            : "بدون دسته"
-                                    }}
-                                </Link>
-                            </div>
-                            <div class="w-2/12">
-                                {{
-                                    new Date(
-                                        transaction.created_at
-                                    ).toLocaleDateString("fa-IR")
-                                }}
-                            </div>
-                            <div class="w-2/12">
-                                <span class="font-bold">
-                                    {{
-                                        transaction.type == "expense"
-                                            ? " - "
-                                            : " + "
-                                    }}
-                                </span>
-                                {{ numberWithCommas(transaction.amount) }} تومان
-                            </div>
-                        </div>
+                        <Tranactions :transactions="transactions" />
                     </div>
                 </div>
             </div>
