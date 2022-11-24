@@ -1,25 +1,25 @@
 <script setup>
 import { ref } from "vue";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
-import Dropdown from "@/Components/Dropdown.vue";
-import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/inertia-vue3";
+import Navbar from "@/Components/MainLayout/Navbar.vue";
+import SettingsDropdown from "@/Components/MainLayout/SettingsDropdown.vue";
 
 const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
     <div dir="rtl">
-        <div class="min-h-screen bg-gray-100 font-shabnam">
-            <nav class="bg-white border-b border-gray-100">
+        <div class="min-h-screen bg-blue-100 font-shabnam pt-4">
+            <nav class="bg-blue-300 bg-opacity-60 my-2 mx-4 rounded-xl">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
-                            <div class="shrink-0 flex items-center">
+                            <div class="shrink-0 flex items-center ml-4">
                                 <Link :href="route('home')">
                                     <ApplicationLogo
                                         class="block h-9 w-auto fill-current text-gray-800"
@@ -28,87 +28,11 @@ const showingNavigationDropdown = ref(false);
                             </div>
 
                             <!-- Navigation Links -->
-                            <div
-                                class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex"
-                            >
-                                <NavLink
-                                    :href="route('home')"
-                                    :active="route().current('home')"
-                                >
-                                    خانه
-                                </NavLink>
-                                <NavLink
-                                    :href="route('transactions.index')"
-                                    :active="
-                                        route().current('transactions.index')
-                                    "
-                                >
-                                    تراکنش ها
-                                </NavLink>
-                                <NavLink
-                                    :href="route('transactions.create')"
-                                    :active="
-                                        route().current('transactions.create')
-                                    "
-                                >
-                                    تراکنش جدید
-                                </NavLink>
-                                <NavLink
-                                    :href="route('categories.create')"
-                                    :active="
-                                        route().current('categories.create')
-                                    "
-                                >
-                                    دسته بندی جدید
-                                </NavLink>
-                            </div>
+                            <Navbar />
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <!-- Settings Dropdown -->
-                            <div class="ml-3 relative">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                            >
-                                                {{ $page.props.auth.user.name }}
-
-                                                <svg
-                                                    class="ml-2 -mr-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink
-                                            :href="route('profile.edit')"
-                                        >
-                                            Profile
-                                        </DropdownLink>
-                                        <DropdownLink
-                                            :href="route('logout')"
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
+                        <!-- Settings Dropdown -->
+                        <SettingsDropdown />
 
                         <!-- Hamburger -->
                         <div class="-mr-2 flex items-center sm:hidden">
@@ -168,6 +92,24 @@ const showingNavigationDropdown = ref(false);
                         >
                             خانه
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('transactions.index')"
+                            :active="route().current('transactions.index')"
+                        >
+                            تراکنش ها
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('transactions.create')"
+                            :active="route().current('transactions.create')"
+                        >
+                            تراکنش جدید
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('categories.create')"
+                            :active="route().current('categories.create')"
+                        >
+                            دسته بندی جدید
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -183,14 +125,14 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="mt-3 space-y-1">
                             <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
+                                پروفایل
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 :href="route('logout')"
                                 method="post"
                                 as="button"
                             >
-                                Log Out
+                                خروج
                             </ResponsiveNavLink>
                         </div>
                     </div>
@@ -198,8 +140,10 @@ const showingNavigationDropdown = ref(false);
             </nav>
 
             <!-- Page Heading -->
-            <header class="bg-white shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <header v-if="$slots.header" class="p-4">
+                <div
+                    class="py-4 px-4 sm:px-6 lg:px-8 bg-black bg-opacity-10 text-gray-600 font-bold rounded-2xl"
+                >
                     <slot name="header" />
                 </div>
             </header>
