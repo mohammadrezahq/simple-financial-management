@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryCreateRequest;
 use App\Models\Category;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
@@ -51,7 +49,10 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::with('transaction')
+                        ->find($id);
+
+        return inertia('Category/Show', compact('category'));
     }
 
     /**
