@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionCreateRequest;
+use App\Http\Requests\TransactionFilterRequest;
 use App\Models\Category;
 use App\Models\Transaction;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -22,23 +22,32 @@ class TransactionController extends Controller
                             ->orderBy('id', 'DESC')
                             ->get();
 
-        return inertia('Transaction/Index', compact('transactions'));
+        $categories = Category::all();
+
+        return inertia('Transaction/Index', compact('transactions', 'categories'));
     }
 
-    public function filter(Request $request)
+    public function filter(TransactionFilterRequest $request)
     {
-        $request->validate([
-            'starts_at' => 'nullable|date',
-            'ends_at' => 'nullable|date'
-        ]);
+        $transactions = Transaction::with('category');
 
-        $starts_at = $request->starts_at ? $request->starts_at : verta()->startMonth()->formatGregorian('Y-n-j H:i:s');
-        $ends_at = $request->ends_at ? $request->ends_at : Carbon::now();
+        if ($request->starts_at) {
+            $transactions->whereDate('created_at', '>=', $request->starts_at);
+        }
+        if ($request->ends_at) {
+            $transactions->whereDate('created_at', '<=', $request->ends_at);
+        }
 
-        $transactions = Transaction::with('category')->whereDate('created_at', '>=', $starts_at)
-                    ->whereDate('created_at', '<=', $ends_at)
-                    ->orderBy('id', 'DESC')
-                    ->get();
+        if ($request->category_id) {
+            $transactions->where('category_id', $request->category_id);
+        }
+
+        if ($request->type) {
+            $transactions->where('type', $request->type);
+        }
+
+        $transactions = $transactions->orderBy('id', 'DESC')
+                            ->get();
 
         return response()->json($transactions);
     }
