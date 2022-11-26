@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryCreateRequest;
 use App\Models\Category;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -49,10 +50,17 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::with('transaction')
-                        ->find($id);
+        if ($id == 0) {
+            $id = null;
+        }
 
-        return inertia('Category/Show', compact('category'));
+        $transactions = Transaction::with('category:id,name')
+                            ->where('category_id', $id)
+                                ->get();
+
+        $title = 'دسته ' . ($transactions[0]->category->name ?? 'بدون دسته');
+
+        return inertia('TransactionsPage', compact('transactions', 'title'));
     }
 
     /**
