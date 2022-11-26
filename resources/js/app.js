@@ -7,7 +7,6 @@ import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Vue3PersianDatetimePicker from 'vue3-persian-datetime-picker'
-import { successToast, errorToast } from './toasts';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -22,7 +21,7 @@ createInertiaApp({
         return createApp({ render: () => h(app, props) })
             .use(plugin)
             .component('DatePicker', Vue3PersianDatetimePicker)
-            .mixin({ methods: { numberWithCommas, successToast, errorToast } })
+            .mixin({ methods: { numberWithCommas } })
             .use(ZiggyVue, Ziggy)
             .mount(el);
     },
