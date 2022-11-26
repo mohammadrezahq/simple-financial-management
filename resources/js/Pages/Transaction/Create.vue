@@ -139,6 +139,7 @@ const submit = () => {
                                         <textarea
                                             name="description"
                                             id="description"
+                                            v-model="form.description"
                                             class="border-gray-300 w-full h-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                                         ></textarea>
                                         <InputError
