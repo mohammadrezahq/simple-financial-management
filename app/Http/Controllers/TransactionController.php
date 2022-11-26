@@ -24,7 +24,9 @@ class TransactionController extends Controller
 
         $categories = Category::all();
 
-        return inertia('Transaction/Index', compact('transactions', 'categories'));
+        $title = "لیست تراکنش ها";
+
+        return inertia('TransactionsPage', compact('transactions', 'categories', 'title'));
     }
 
     public function filter(TransactionFilterRequest $request)
@@ -115,8 +117,8 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Transaction $transaction)
     {
-        //
+        $transaction->delete();
     }
 }
