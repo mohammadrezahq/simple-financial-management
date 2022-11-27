@@ -9,6 +9,7 @@ import Tranactions from "@/Components/Transactions.vue";
 import { getFilteredTransactions } from "@/Methods/transactions";
 import HeaderText from "@/Components/HeaderText.vue";
 import { errorToast } from "@/toasts";
+import moment from "jalali-moment";
 
 const props = defineProps({
     transactions: Object,
@@ -18,16 +19,29 @@ const props = defineProps({
 
 const transactions = ref(props.transactions);
 
+const startOfMonth = () => {
+    const options = { year: "numeric", month: "numeric", day: "numeric" };
+    const today = new Date()
+        .toLocaleDateString("fa-IR", options)
+        .replace(/([۰-۹])/g, (token) =>
+            String.fromCharCode(token.charCodeAt(0) - 1728)
+        );
+
+    const date = today.split("/");
+    return moment
+        .from(date[0] + "/" + date[1] + "/01", "fa", "YYYY/M/D")
+        .format("YYYY/MM/DD");
+};
+
 const form = useForm({
-    starts_at: "",
+    starts_at: startOfMonth(),
     ends_at: "",
     category_id: "",
     type: "",
 });
 
 const filter = async () => {
-    const data = await getFilteredTransactions(form.data);
-
+    const data = await getFilteredTransactions(form.data());
     transactions.value = data;
 };
 
@@ -52,7 +66,7 @@ const remove = (i) => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <h2 class="text-xl font-bold mb-2">فیلتر</h2>
-                        <form @submit.prevent="submit">
+                        <form @submit.prevent="filter">
                             <div class="flex gap-x-2 items-end mb-4">
                                 <div>
                                     <InputLabel for="starts_at"

@@ -21,6 +21,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "jalali-moment": "^3.3.11",
         "more-toast": "^1.0.2",
         "vue3-persian-datetime-picker": "^1.2.2"
     }
