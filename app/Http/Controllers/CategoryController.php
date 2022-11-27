@@ -16,7 +16,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+
+        return inertia('Category/Create', compact('categories'));
     }
 
     /**
@@ -92,14 +94,8 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $category = Category::find($id);
-
-        if (!$category) {
-            abort(401);
-        }
-
         $category->delete();
     }
 }
