@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import HeaderText from "@/Components/HeaderText.vue";
 
 defineProps({
     categories: Object,
@@ -28,15 +29,13 @@ const submit = () => {
 
 <template>
     <AuthenticatedLayout>
-        <Head title="اضافه کردن" />
+        <Head title="اضافه کردن تراکنش" />
 
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                اضافه کردن
-            </h2>
+            <HeaderText> اضافه کردن تراکنش </HeaderText>
         </template>
 
-        <div class="py-12">
+        <div class="py-8">
             <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
@@ -48,7 +47,9 @@ const submit = () => {
                         </div>
 
                         <form @submit.prevent="submit">
-                            <div class="flex gap-x-2">
+                            <div
+                                class="flex gap-x-2 gap-y-2 flex-col md:flex-row"
+                            >
                                 <div class="w-full md:w-1/2">
                                     <div>
                                         <InputLabel for="title" value="تیتر" />
@@ -88,12 +89,11 @@ const submit = () => {
                                         <select
                                             name="type"
                                             id="type"
+                                            required
                                             v-model="form.type"
-                                            class="border-gray-300 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                            class="border-slate-200 w-full focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm"
                                         >
-                                            <option selected value="expense">
-                                                خرج
-                                            </option>
+                                            <option value="expense">خرج</option>
                                             <option value="income">
                                                 درآمد
                                             </option>
@@ -112,7 +112,7 @@ const submit = () => {
                                             name="category"
                                             id="category"
                                             v-model="form.category_id"
-                                            class="border-gray-300 w-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                            class="border-slate-200 w-full focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm"
                                         >
                                             <option
                                                 v-for="(
@@ -130,8 +130,10 @@ const submit = () => {
                                         />
                                     </div>
                                 </div>
-                                <div class="w-full md:w-1/2">
-                                    <div>
+                                <div
+                                    class="w-full md:w-1/2 flex flex-col justify-between"
+                                >
+                                    <div class="mb-6 h-full">
                                         <InputLabel
                                             for="description"
                                             value="توضیحات"
@@ -139,8 +141,9 @@ const submit = () => {
                                         <textarea
                                             name="description"
                                             id="description"
+                                            rows="10"
                                             v-model="form.description"
-                                            class="border-gray-300 w-full h-full focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                                            class="border-slate-200 w-full h-full focus:border-blue-500 focus:ring-blue-500 rounded-md shadow-sm"
                                         ></textarea>
                                         <InputError
                                             class="mt-2"
