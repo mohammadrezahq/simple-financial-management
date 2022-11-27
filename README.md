@@ -7,3 +7,5 @@
 <img src="https://github.com/mohammadrezahq/simple-financial-management/blob/main/images/create-transaction.png">
 <img src="https://github.com/mohammadrezahq/simple-financial-management/blob/main/images/transactions.png">
 <img src="https://github.com/mohammadrezahq/simple-financial-management/blob/main/images/transaction.png">
+<img src="https://github.com/mohammadrezahq/simple-financial-management/blob/main/images/login.png">
+<img src="https://github.com/mohammadrezahq/simple-financial-management/blob/main/images/register.png">
