@@ -2,6 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import { ref } from "@vue/reactivity";
+import HeaderText from "@/Components/HeaderText.vue";
 
 const props = defineProps({
     transactions: Object,
@@ -52,9 +53,7 @@ props.transactions.map((t) => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                خانه
-            </h2>
+            <HeaderText> خانه </HeaderText>
         </template>
 
         <div class="py-8">
